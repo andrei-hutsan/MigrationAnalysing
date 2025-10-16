@@ -1,21 +1,30 @@
 using Microsoft.EntityFrameworkCore;
 using MigrationAnalysing.DataAccess;
+using MigrationAnalysing.Benchmark;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// === Detect Benchmark Flag ===
+if (args.Contains("--benchmark"))
+{
+    var mode = args.SkipWhile(a => a != "--benchmark").Skip(1).FirstOrDefault() ?? "migrate";
+    var conn = builder.Configuration.GetConnectionString("MSSQL_Conn")
+               ?? "Server=localhost;Database=MigrationBenchDb;Trusted_Connection=True;TrustServerCertificate=True;";
+
+    await BenchmarkRunner.RunAsync(mode, conn, 100);
+    return;
+}
+
+// === Normal web app setup ===
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL_Conn")));
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,9 +32,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
