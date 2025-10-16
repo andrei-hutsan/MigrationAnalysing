@@ -1,6 +1,4 @@
-﻿using System.Data;
-using System.Diagnostics;
-using Microsoft.Data.SqlClient;
+﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using MigrationAnalysing.DataAccess;
 
@@ -17,12 +15,11 @@ public static class BenchmarkRunner
 
         Console.WriteLine($"== Running benchmark: {mode} ==");
 
-        long elapsed = 0;
+        long elapsed;
 
         switch (mode.ToLower())
         {
-            case "migrate":
-                await DropDatabase(connection);
+            case "onstartup":
                 elapsed = await MeasureAsync(async () =>
                 {
                     using var ctx = new AppDbContext(
@@ -32,32 +29,16 @@ public static class BenchmarkRunner
                     await ctx.Database.MigrateAsync();
                 });
                 Log("MigrateOnStartup", migrationCount, elapsed, resultPath);
+                PrintResult("MigrateOnStartup", elapsed);
                 break;
 
-            case "sql":
-                await DropDatabase(connection);
-                var scriptPath = Path.Combine("artifacts", $"script_{migrationCount}.sql");
-                if (!File.Exists(scriptPath))
-                    throw new FileNotFoundException(scriptPath);
-                elapsed = await MeasureAsync(async () =>
-                {
-                    string sql = await File.ReadAllTextAsync(scriptPath);
-                    using var conn = new SqlConnection(connection);
-                    await conn.OpenAsync();
-                    using var cmd = conn.CreateCommand();
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = sql;
-                    cmd.CommandTimeout = 0;
-                    await cmd.ExecuteNonQueryAsync();
-                });
-                Log("CachedSQL", migrationCount, elapsed, resultPath);
-                break;
 
             case "bundle":
-                await DropDatabase(connection);
                 var bundlePath = Path.Combine("artifacts", $"bundle_{migrationCount}.exe");
+                
                 if (!File.Exists(bundlePath))
                     throw new FileNotFoundException(bundlePath);
+
                 elapsed = await MeasureAsync(async () =>
                 {
                     var psi = new ProcessStartInfo
@@ -76,6 +57,7 @@ public static class BenchmarkRunner
                     Console.WriteLine(error);
                 });
                 Log("Bundle", migrationCount, elapsed, resultPath);
+                PrintResult("Bundle", elapsed);
                 break;
 
 
@@ -83,8 +65,6 @@ public static class BenchmarkRunner
                 Console.WriteLine("Invalid benchmark mode. Use migrate | sql | bundle");
                 return;
         }
-
-        Console.WriteLine($"{mode} completed in {elapsed} ms");
     }
 
     private static void Log(string method, int migrations, long ms, string path)
@@ -100,21 +80,8 @@ public static class BenchmarkRunner
         return sw.ElapsedMilliseconds;
     }
 
-    private static async Task DropDatabase(string connection)
+    private static void PrintResult(string method, long ms)
     {
-        var builder = new SqlConnectionStringBuilder(connection);
-        var dbName = builder.InitialCatalog;
-        builder.InitialCatalog = "master";
-
-        using var conn = new SqlConnection(builder.ToString());
-        await conn.OpenAsync();
-        using var cmd = conn.CreateCommand();
-        cmd.CommandText = $@"
-IF DB_ID('{dbName}') IS NOT NULL
-BEGIN
-    ALTER DATABASE [{dbName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE [{dbName}];
-END";
-        await cmd.ExecuteNonQueryAsync();
+        Console.WriteLine($"{method} completed migration in {ms}");
     }
 }
