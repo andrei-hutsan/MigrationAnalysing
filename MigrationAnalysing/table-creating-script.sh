@@ -1,8 +1,9 @@
 #!/bin/bash
 
-for i in {1..10}
-do
+#for i in {13..20}
+#do
 
+i="11"
 CLASSNAME="Table${i}"
 FILEPATH="Models/${CLASSNAME}.cs"
 PATTERN=": base(options) { }"
@@ -26,6 +27,6 @@ dotnet ef migrations add "${CLASSNAME}Migration0"
 # call script to insert the rest of the columns
 ./column-inserting-script.sh $CLASSNAME
 
-done # end for loop
+#done # end for loop
 
 dotnet ef database update
