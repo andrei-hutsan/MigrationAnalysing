@@ -22,7 +22,7 @@ public static class BenchmarkRunner
         switch (mode.ToLower())
         {
             case "onstartup":
-                Console.WriteLine("== Benchmark: OnStartup Migration (Cold vs Warm Average) ==");
+                Console.WriteLine("== Benchmark: NonCompiled Models OnStartup Migration (Cold vs Warm Average) ==");
 
                 var options = new DbContextOptionsBuilder<AppDbContext>()
                     .UseSqlServer(connection)
@@ -62,6 +62,8 @@ public static class BenchmarkRunner
 
 
             case "precompiled":
+                Console.WriteLine("== Benchmark: PreCompiled Models OnStartup Migration (Cold vs Warm Average) ==");
+
                 var opts = new DbContextOptionsBuilder<AppDbContext>()
                     .UseSqlServer(connection)
                     .UseModel(AppDbContextModel.Instance)
