@@ -17,8 +17,6 @@ public static class BenchmarkRunner
 
         Console.WriteLine($"== Running benchmark: {mode} ==");
 
-        long elapsed;
-
         switch (mode.ToLower())
         {
             case "onstartup":
@@ -31,35 +29,6 @@ public static class BenchmarkRunner
                 await ColdVsWarm(options);
 
                 break;
-
-
-            case "bundle":
-                var bundlePath = Path.Combine("artifacts", $"bundle_{migrationCount}.exe");
-                
-                if (!File.Exists(bundlePath))
-                    throw new FileNotFoundException(bundlePath);
-
-                elapsed = await MeasureAsync(async () =>
-                {
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = bundlePath,
-                        Arguments = $"--connection \"{connection}\"",
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        CreateNoWindow = true
-                    };
-                    var proc = Process.Start(psi)!;
-                    string output = await proc.StandardOutput.ReadToEndAsync();
-                    string error = await proc.StandardError.ReadToEndAsync();
-                    await proc.WaitForExitAsync();
-                    Console.WriteLine(error);
-                });
-                Log("Bundle", migrationCount, elapsed, resultPath);
-                PrintResult("Bundle", elapsed);
-                break;
-
 
             case "precompiled":
                 Console.WriteLine("== Benchmark: PreCompiled Models OnStartup Migration (Cold vs Warm Average) ==");
