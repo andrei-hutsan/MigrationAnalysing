@@ -11,7 +11,7 @@ if (args.Contains("--benchmark"))
     var conn = builder.Configuration.GetConnectionString("MSSQL_Conn")
                ?? "Server=localhost;Database=MigrationBenchDb;Trusted_Connection=True;TrustServerCertificate=True;";
 
-    await BenchmarkRunner.RunAsync(mode, conn, 100);
+    await BenchmarkRunner.RunAsync(mode, conn);
     return;
 }
 
