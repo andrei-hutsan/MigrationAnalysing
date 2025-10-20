@@ -11,7 +11,7 @@ namespace MigrationAnalysing
     public partial class AppDbContextModel
     {
         private AppDbContextModel()
-            : base(skipDetectChanges: false, modelId: new Guid("16216a64-8eda-465b-b2bd-1575531e342a"), entityTypeCount: 10)
+            : base(skipDetectChanges: false, modelId: new Guid("958b6bca-f5e7-4596-b2ae-851d7565b248"), entityTypeCount: 20)
         {
         }
 
@@ -19,7 +19,17 @@ namespace MigrationAnalysing
         {
             var table1 = Table1EntityType.Create(this);
             var table10 = Table10EntityType.Create(this);
+            var table11 = Table11EntityType.Create(this);
+            var table12 = Table12EntityType.Create(this);
+            var table13 = Table13EntityType.Create(this);
+            var table14 = Table14EntityType.Create(this);
+            var table15 = Table15EntityType.Create(this);
+            var table16 = Table16EntityType.Create(this);
+            var table17 = Table17EntityType.Create(this);
+            var table18 = Table18EntityType.Create(this);
+            var table19 = Table19EntityType.Create(this);
             var table2 = Table2EntityType.Create(this);
+            var table20 = Table20EntityType.Create(this);
             var table3 = Table3EntityType.Create(this);
             var table4 = Table4EntityType.Create(this);
             var table5 = Table5EntityType.Create(this);
@@ -30,7 +40,17 @@ namespace MigrationAnalysing
 
             Table1EntityType.CreateAnnotations(table1);
             Table10EntityType.CreateAnnotations(table10);
+            Table11EntityType.CreateAnnotations(table11);
+            Table12EntityType.CreateAnnotations(table12);
+            Table13EntityType.CreateAnnotations(table13);
+            Table14EntityType.CreateAnnotations(table14);
+            Table15EntityType.CreateAnnotations(table15);
+            Table16EntityType.CreateAnnotations(table16);
+            Table17EntityType.CreateAnnotations(table17);
+            Table18EntityType.CreateAnnotations(table18);
+            Table19EntityType.CreateAnnotations(table19);
             Table2EntityType.CreateAnnotations(table2);
+            Table20EntityType.CreateAnnotations(table20);
             Table3EntityType.CreateAnnotations(table3);
             Table4EntityType.CreateAnnotations(table4);
             Table5EntityType.CreateAnnotations(table5);
