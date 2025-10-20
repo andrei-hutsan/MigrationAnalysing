@@ -19,7 +19,7 @@ namespace MigrationAnalysing
                 "MigrationAnalysing.Models.Table4",
                 typeof(Table4),
                 baseEntityType,
-                propertyCount: 10,
+                propertyCount: 25,
                 keyCount: 1);
 
             var id = runtimeEntityType.AddProperty(
@@ -39,12 +39,117 @@ namespace MigrationAnalysing
                 fieldInfo: typeof(Table4).GetField("<column1>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
             column1.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
 
+            var column10 = runtimeEntityType.AddProperty(
+                "column10",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column10", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column10>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column10.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column11 = runtimeEntityType.AddProperty(
+                "column11",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column11", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column11>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column11.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column12 = runtimeEntityType.AddProperty(
+                "column12",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column12", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column12>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column12.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column13 = runtimeEntityType.AddProperty(
+                "column13",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column13", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column13>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column13.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column14 = runtimeEntityType.AddProperty(
+                "column14",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column14", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column14>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column14.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column15 = runtimeEntityType.AddProperty(
+                "column15",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column15", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column15>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column15.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column16 = runtimeEntityType.AddProperty(
+                "column16",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column16", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column16>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column16.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column17 = runtimeEntityType.AddProperty(
+                "column17",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column17", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column17>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column17.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column18 = runtimeEntityType.AddProperty(
+                "column18",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column18", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column18>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column18.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column19 = runtimeEntityType.AddProperty(
+                "column19",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column19", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column19>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column19.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
             var column2 = runtimeEntityType.AddProperty(
                 "column2",
                 typeof(string),
                 propertyInfo: typeof(Table4).GetProperty("column2", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(Table4).GetField("<column2>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
             column2.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column20 = runtimeEntityType.AddProperty(
+                "column20",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column20", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column20>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column20.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column21 = runtimeEntityType.AddProperty(
+                "column21",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column21", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column21>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column21.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column22 = runtimeEntityType.AddProperty(
+                "column22",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column22", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column22>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column22.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column23 = runtimeEntityType.AddProperty(
+                "column23",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column23", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column23>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column23.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+            var column24 = runtimeEntityType.AddProperty(
+                "column24",
+                typeof(string),
+                propertyInfo: typeof(Table4).GetProperty("column24", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(Table4).GetField("<column24>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            column24.AddAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
 
             var column3 = runtimeEntityType.AddProperty(
                 "column3",
