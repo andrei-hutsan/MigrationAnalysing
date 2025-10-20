@@ -44,7 +44,7 @@ public static class BenchmarkRunner
 
 
             default:
-                Console.WriteLine("Invalid benchmark mode. Use migrate | bundle | precompiled");
+                Console.WriteLine("Invalid benchmark mode. Use onstartup | bundle | precompiled");
                 return;
         }
     }
