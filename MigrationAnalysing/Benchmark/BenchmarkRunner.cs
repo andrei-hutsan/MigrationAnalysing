@@ -6,7 +6,7 @@ namespace MigrationAnalysing.Benchmark;
 
 public static class BenchmarkRunner
 {
-    private static int migrationCount = 100;
+    private static int migrationCount = 500;
     private static string resultPath = Path.Combine("artifacts", "results.csv");
     public static async Task RunAsync(string mode, string connection)
     {
