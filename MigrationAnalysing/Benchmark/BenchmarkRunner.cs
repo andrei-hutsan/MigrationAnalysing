@@ -88,27 +88,21 @@ public static class BenchmarkRunner
             await ctx.Database.MigrateAsync();
         });
 
-        var warmTimes = new List<long>();
-        for (int i = 0; i < 10; i++)
+        
+        var warmElapsed = await MeasureAsync(async () =>
         {
-            var time = await MeasureAsync(async () =>
-            {
-                await using var ctx = new AppDbContext(options);
-                await ctx.Database.MigrateAsync();
-            });
-            warmTimes.Add(time);
-            Console.WriteLine($"Warm run {i + 1}: {time} ms");
-        }
+            await using var ctx = new AppDbContext(options);
+            await ctx.Database.MigrateAsync();
+        });
 
-        long warmAvg = (long)warmTimes.Average();
 
         Log("OnStartup-Cold", migrationCount, coldElapsed, resultPath);
-        Log("OnStartup-WarmAvg", migrationCount, warmAvg, resultPath);
+        Log("OnStartup-WarmAvg", migrationCount, warmElapsed, resultPath);
 
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"Cold migration (first run): {coldElapsed} ms");
-        Console.WriteLine($"Average warm migration (cached model): {warmAvg} ms");
-        Console.WriteLine($"Startup caching gain: {coldElapsed - warmAvg} ms");
+        Console.WriteLine($"Warm migration (cached model): {warmElapsed} ms");
+        Console.WriteLine($"Startup caching gain: {coldElapsed - warmElapsed} ms");
         Console.ResetColor();
     }
 
@@ -127,6 +121,8 @@ public static class BenchmarkRunner
 
     private static void PrintResult(string method, long ms)
     {
-        Console.WriteLine($"{method} completed migration in {ms}");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"{method} completed migration in {ms} ms");
+        Console.ResetColor();
     }
 }
