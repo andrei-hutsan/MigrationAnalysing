@@ -17,10 +17,12 @@ public static class BenchmarkRunner
 
         Console.WriteLine($"== Running benchmark: {mode} ==");
 
+        long elapsed;
+
         switch (mode.ToLower())
         {
             case "onstartup":
-                Console.WriteLine("== Benchmark: NonCompiled Models OnStartup Migration (Cold vs Warm Average) ==");
+                Console.WriteLine("== Benchmark: NonCompiled Models OnStartup Migration (Cold vs Warm) ==");
 
                 var options = new DbContextOptionsBuilder<AppDbContext>()
                     .UseSqlServer(connection)
@@ -30,8 +32,37 @@ public static class BenchmarkRunner
 
                 break;
 
+
+            case "bundle":
+                var bundlePath = Path.Combine("artifacts", $"bundle_{migrationCount}.exe");
+
+                if (!File.Exists(bundlePath))
+                    throw new FileNotFoundException(bundlePath);
+
+                elapsed = await MeasureAsync(async () =>
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = bundlePath,
+                        Arguments = $"--connection \"{connection}\"",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true
+                    };
+                    var proc = Process.Start(psi)!;
+                    string output = await proc.StandardOutput.ReadToEndAsync();
+                    string error = await proc.StandardError.ReadToEndAsync();
+                    await proc.WaitForExitAsync();
+                    Console.WriteLine(error);
+                });
+                Log("Bundle", migrationCount, elapsed, resultPath);
+                PrintResult("Bundle", elapsed);
+                break;
+
+
             case "precompiled":
-                Console.WriteLine("== Benchmark: PreCompiled Models OnStartup Migration (Cold vs Warm Average) ==");
+                Console.WriteLine("== Benchmark: PreCompiled Models OnStartup Migration (Cold vs Warm) ==");
 
                 var opts = new DbContextOptionsBuilder<AppDbContext>()
                     .UseSqlServer(connection)
@@ -44,7 +75,7 @@ public static class BenchmarkRunner
 
 
             default:
-                Console.WriteLine("Invalid benchmark mode. Use onstartup | bundle | precompiled");
+                Console.WriteLine("Invalid benchmark mode. Use migrate | bundle | precompiled");
                 return;
         }
     }
@@ -57,27 +88,21 @@ public static class BenchmarkRunner
             await ctx.Database.MigrateAsync();
         });
 
-        var warmTimes = new List<long>();
-        for (int i = 0; i < 10; i++)
-        {
-            var time = await MeasureAsync(async () =>
-            {
-                await using var ctx = new AppDbContext(options);
-                await ctx.Database.MigrateAsync();
-            });
-            warmTimes.Add(time);
-            Console.WriteLine($"Warm run {i + 1}: {time} ms");
-        }
 
-        long warmAvg = (long)warmTimes.Average();
+        var warmElapsed = await MeasureAsync(async () =>
+        {
+            await using var ctx = new AppDbContext(options);
+            await ctx.Database.MigrateAsync();
+        });
+
 
         Log("OnStartup-Cold", migrationCount, coldElapsed, resultPath);
-        Log("OnStartup-WarmAvg", migrationCount, warmAvg, resultPath);
+        Log("OnStartup-WarmAvg", migrationCount, warmElapsed, resultPath);
 
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"Cold migration (first run): {coldElapsed} ms");
-        Console.WriteLine($"Average warm migration (cached model): {warmAvg} ms");
-        Console.WriteLine($"Startup caching gain: {coldElapsed - warmAvg} ms");
+        Console.WriteLine($"Warm migration (cached model): {warmElapsed} ms");
+        Console.WriteLine($"Startup caching gain: {coldElapsed - warmElapsed} ms");
         Console.ResetColor();
     }
 
@@ -96,6 +121,8 @@ public static class BenchmarkRunner
 
     private static void PrintResult(string method, long ms)
     {
-        Console.WriteLine($"{method} completed migration in {ms}");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"{method} completed migration in {ms} ms");
+        Console.ResetColor();
     }
 }
