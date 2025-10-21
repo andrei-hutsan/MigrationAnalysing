@@ -11,7 +11,7 @@ namespace MigrationAnalysing
     public partial class AppDbContextModel
     {
         private AppDbContextModel()
-            : base(skipDetectChanges: false, modelId: new Guid("5df6d6da-143b-44b1-b340-4831ff66bacc"), entityTypeCount: 20)
+            : base(skipDetectChanges: false, modelId: new Guid("9e995ee0-a3b7-4172-8f39-c2a8589aa556"), entityTypeCount: 20)
         {
         }
 
