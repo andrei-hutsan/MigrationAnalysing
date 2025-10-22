@@ -10,6 +10,9 @@ public static class BenchmarkRunner
     private static string resultPath = Path.Combine("artifacts", "results.csv");
     public static async Task RunAsync(string mode, string connection)
     {
+        // clear past connections to db
+        Microsoft.Data.SqlClient.SqlConnection.ClearAllPools();
+
         Directory.CreateDirectory("artifacts");
 
         if (!File.Exists(resultPath))
