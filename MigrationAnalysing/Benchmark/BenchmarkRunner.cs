@@ -65,6 +65,7 @@ public static class BenchmarkRunner
 
                 Log("Bundle", migrationCount, elapsed, resultPath);
                 PrintResult("Bundle", elapsed);
+
                 break;
 
             default:
@@ -131,13 +132,12 @@ public static class BenchmarkRunner
             Console.WriteLine("No migrations to revert.");
             return;
         }
-
         lastN = Math.Min(lastN, applied.Count);
 
         string targetMigration = lastN == applied.Count
-            ? "0"
+            ? applied.First() 
             : applied[applied.Count - lastN - 1];
-
+       
         Console.WriteLine($"Reverting last {lastN} migrations to '{targetMigration}'...");
 
         await context.Database.MigrateAsync(targetMigration);
