@@ -1,13 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using MigrationAnalysing.DataAccess;
+using MigrationAnalysing;
 using MigrationAnalysing.Benchmark;
+using MigrationAnalysing.DataAccess;
+using System.Diagnostics;
+
+var totalSw = Stopwatch.StartNew();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// === Detect Benchmark Flag ===
 if (args.Contains("--benchmark"))
 {
-    var mode = args.SkipWhile(a => a != "--benchmark").Skip(1).FirstOrDefault() ?? "migrate";
+    var mode = args.SkipWhile(a => a != "--benchmark").Skip(1).FirstOrDefault() ?? "bundle";
     var conn = builder.Configuration.GetConnectionString("MSSQL_Conn")
                ?? "Server=localhost;Database=MigrationBenchDb;Trusted_Connection=True;TrustServerCertificate=True;";
 
@@ -15,15 +18,25 @@ if (args.Contains("--benchmark"))
     return;
 }
 
-// === Normal web app setup ===
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL_Conn")));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL_Conn"));
+});
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync();
+}
+totalSw.Stop();
+Console.WriteLine($"[Startup] EF Migrations applied in {totalSw.ElapsedMilliseconds} ms");
 
 if (app.Environment.IsDevelopment())
 {
