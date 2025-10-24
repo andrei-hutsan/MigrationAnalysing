@@ -10,6 +10,9 @@ public static class BenchmarkRunner
     private static string resultPath = Path.Combine("artifacts", "results.csv");
     public static async Task RunAsync(string mode, string connection)
     {
+        // clear past connections to db
+        Microsoft.Data.SqlClient.SqlConnection.ClearAllPools();
+
         Directory.CreateDirectory("artifacts");
 
         if (!File.Exists(resultPath))
@@ -22,7 +25,7 @@ public static class BenchmarkRunner
         switch (mode.ToLower())
         {
             case "onstartup":
-                Console.WriteLine("== Benchmark: NonCompiled Models OnStartup Migration (Cold vs Warm Average) ==");
+                Console.WriteLine("== Benchmark: NonCompiled Models OnStartup Migration (Cold vs Warm) ==");
 
                 var options = new DbContextOptionsBuilder<AppDbContext>()
                     .UseSqlServer(connection)
@@ -35,7 +38,7 @@ public static class BenchmarkRunner
 
             case "bundle":
                 var bundlePath = Path.Combine("artifacts", $"bundle_{migrationCount}.exe");
-                
+
                 if (!File.Exists(bundlePath))
                     throw new FileNotFoundException(bundlePath);
 
@@ -62,7 +65,7 @@ public static class BenchmarkRunner
 
 
             case "precompiled":
-                Console.WriteLine("== Benchmark: PreCompiled Models OnStartup Migration (Cold vs Warm Average) ==");
+                Console.WriteLine("== Benchmark: PreCompiled Models OnStartup Migration (Cold vs Warm) ==");
 
                 var opts = new DbContextOptionsBuilder<AppDbContext>()
                     .UseSqlServer(connection)
@@ -88,7 +91,7 @@ public static class BenchmarkRunner
             await ctx.Database.MigrateAsync();
         });
 
-        
+
         var warmElapsed = await MeasureAsync(async () =>
         {
             await using var ctx = new AppDbContext(options);
