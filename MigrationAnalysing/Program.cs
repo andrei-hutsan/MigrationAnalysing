@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MigrationAnalysing.Benchmark;
+using MigrationAnalysing;
 using MigrationAnalysing.DataAccess;
 using System.Diagnostics;
 
@@ -18,7 +19,10 @@ if (args.Contains("--benchmark"))
 }
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL_Conn")));
+{
+    options.UseModel(AppDbContextModel.Instance);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL_Conn"));
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
