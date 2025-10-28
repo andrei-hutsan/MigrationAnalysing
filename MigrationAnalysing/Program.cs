@@ -20,6 +20,7 @@ if (args.Contains("--benchmark"))
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
+    options.UseModel(AppDbContextModel.Instance);
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL_Conn"));
 });
 
